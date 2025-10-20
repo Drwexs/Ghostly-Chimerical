@@ -13,17 +13,6 @@ const contactEmailBtn = document.getElementById('contactEmail');
 
 let cart = {};
 let caroIndex = 0;
-let autoplayInterval = null;
-
-// Carrossel elementos
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const caroTrack = document.getElementById('caroTrack');
-const carousel = document.getElementById('carousel');
-const viewport = document.querySelector('.carousel-viewport');
-
-let caroWidth = 0;
-let visibleCount = 1; // quantas imagens cabem na viewport
 
 // Função para formatar valores em R$
 function formatBRL(n) {
@@ -76,26 +65,20 @@ overlay.addEventListener('click', () => {
 });
 
 // Limpar carrinho
-if (clearCartBtn) {
-  clearCartBtn.addEventListener('click', () => {
-    cart = {};
-    updateCart();
-  });
-}
+clearCartBtn.addEventListener('click', () => {
+  cart = {};
+  updateCart();
+});
 
 // Checkout via Instagram (abre perfil do Ghostly Chimerical)
-if (checkoutBtn) {
-  checkoutBtn.addEventListener('click', () => {
-    window.open("https://instagram.com/ghostly_chimerical", "_blank");
-  });
-}
+checkoutBtn.addEventListener('click', () => {
+  window.open("https://instagram.com/ghostly_chimerical", "_blank");
+});
 
 // Contato Comercial - abrir Gmail
-if (contactEmailBtn) {
-  contactEmailBtn.addEventListener('click', (e) => {
-    // link mailto está no href no HTML; manter comportamento
-  });
-}
+contactEmailBtn.addEventListener('click', () => {
+  window.location.href = "mailto:ghostlychimericalghostly@gmail.com";
+});
 
 // Adicionar itens ao carrinho
 addButtons.forEach(btn => {
@@ -111,119 +94,32 @@ addButtons.forEach(btn => {
   });
 });
 
-/* ----------------------------
-   Carrossel: lógica de deslize
-   ---------------------------- */
+// Carrossel
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const caroTrack = document.getElementById('caroTrack');
+let caroWidth = caroTrack.children[0].offsetWidth + 10;
 
-// recalcula dimensões
-function recalcSizes() {
-  // pega a primeira imagem visível para largura base
-  const firstImg = caroTrack.querySelector('img');
-  if (!firstImg) return;
-  // força layout se as imagens não estiverem carregadas
-  caroWidth = firstImg.offsetWidth + 10; // gap = 10
-  visibleCount = Math.max(1, Math.floor(viewport.offsetWidth / caroWidth));
-  // garante que carroIndex esteja dentro dos limites
-  caroIndex = Math.min(caroIndex, Math.max(0, caroTrack.children.length - visibleCount));
-  moveCarrossel();
-}
-
-// move track
 function moveCarrossel() {
   caroTrack.style.transform = `translateX(-${caroIndex * caroWidth}px)`;
 }
 
-// next / prev
 nextBtn.addEventListener('click', () => {
-  if (caroIndex < caroTrack.children.length - visibleCount) {
+  if (caroIndex < caroTrack.children.length - Math.floor(caroTrack.parentElement.offsetWidth / caroWidth)) {
     caroIndex++;
-  } else {
-    // loopar para começar
-    caroIndex = 0;
-  }
-  moveCarrossel();
-  resetAutoplay();
-});
-prevBtn.addEventListener('click', () => {
-  if (caroIndex > 0) caroIndex--;
-  else caroIndex = Math.max(0, caroTrack.children.length - visibleCount); // ir para o final
-  moveCarrossel();
-  resetAutoplay();
-});
-
-// autoplay
-function startAutoplay() {
-  stopAutoplay();
-  autoplayInterval = setInterval(() => {
-    if (caroIndex < caroTrack.children.length - visibleCount) caroIndex++;
-    else caroIndex = 0;
     moveCarrossel();
-  }, 4000); // troca a cada 4s
-}
-function stopAutoplay() {
-  if (autoplayInterval) {
-    clearInterval(autoplayInterval);
-    autoplayInterval = null;
   }
-}
-function resetAutoplay() {
-  stopAutoplay();
-  // reinicia com pequeno delay
-  setTimeout(startAutoplay, 2500);
-}
+});
 
-// pausa quando hover no carrossel
-carousel.addEventListener('mouseenter', () => stopAutoplay());
-carousel.addEventListener('mouseleave', () => startAutoplay());
+prevBtn.addEventListener('click', () => {
+  if (caroIndex > 0) {
+    caroIndex--;
+    moveCarrossel();
+  }
+});
 
 // Ajustar largura em resize
 window.addEventListener('resize', () => {
-  // recalc após o resize
-  recalcSizes();
-});
-
-// espera as imagens carregarem para calcular medidas iniciais
-window.addEventListener('load', () => {
-  // pequenas margens para imagens ainda carregando
-  setTimeout(() => {
-    recalcSizes();
-    startAutoplay();
-  }, 80);
-});
-
-// caso imagens carreguem depois do load
-const images = caroTrack.querySelectorAll('img');
-images.forEach(img => {
-  img.addEventListener('load', () => {
-    recalcSizes();
-  });
-});
-
-/* Touch support - deslize simples */
-let startX = 0;
-let isDragging = false;
-let currentTranslate = 0;
-
-viewport.addEventListener('touchstart', (e) => {
-  stopAutoplay();
-  startX = e.touches[0].clientX;
-  isDragging = true;
-});
-viewport.addEventListener('touchmove', (e) => {
-  if (!isDragging) return;
-  const dx = e.touches[0].clientX - startX;
-  caroTrack.style.transition = 'none';
-  caroTrack.style.transform = `translateX(${ -caroIndex * caroWidth + dx }px)`;
-});
-viewport.addEventListener('touchend', (e) => {
-  if (!isDragging) return;
-  const dx = e.changedTouches[0].clientX - startX;
-  caroTrack.style.transition = ''; // restaura transição
-  if (Math.abs(dx) > 50) {
-    if (dx < 0 && caroIndex < caroTrack.children.length - visibleCount) caroIndex++;
-    if (dx > 0 && caroIndex > 0) caroIndex--;
-  }
+  caroWidth = caroTrack.children[0].offsetWidth + 10;
   moveCarrossel();
-  isDragging = false;
-  resetAutoplay();
 });
