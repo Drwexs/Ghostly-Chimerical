@@ -9,117 +9,134 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <img src="img/Logo Ghostly Chimerical.jpeg" alt="Logo Ghostly Chimerical" class="logo" />
-      <div class="titles">
-        <h1 class="site-name">Ghostly Chimerical</h1>
-        <p class="subtitle">Fotografias Artísticas</p>
+
+<header class="topbar">
+  <div class="brand">
+    <img src="img/Logo Ghostly Chimerical.jpeg" class="logo" />
+    <div class="titles">
+      <h1 class="site-name">Ghostly Chimerical</h1>
+      <p class="subtitle">Fotografias Artísticas</p>
+    </div>
+  </div>
+
+  <nav class="nav-right">
+    <div class="tagline">"Entre carne e sombra, a fotografia é confissão".</div>
+    <button id="openCartBtn" class="cart-btn">
+      Carrinho (<span id="cartCount">0</span>)
+    </button>
+  </nav>
+</header>
+
+<main class="container">
+
+<section class="hero">
+  <div class="hero-text">
+    <h2>Oferecemos serviços fotográficos especializados em ensaios individuais, de casais e cobertura de eventos.</h2>
+    <p class="hero-lead">
+      Transformamos instantes em confissões visuais — ensaios autorais com estética retrô e assinatura artística.
+    </p>
+  </div>
+
+  <div class="carousel" id="carousel">
+    <button class="caro-arrow left" id="prevBtn">‹</button>
+    <div class="carousel-viewport">
+      <div class="caro-track" id="caroTrack">
+        <img src="img/imagem menina.jpeg" />
+        <img src="img/image24.jpg" />
+        <img src="img/image12.jpg" />
+        <img src="img/image25.jpg" />
+        <img src="img/image02.jpg" />
+        <img src="img/image13.jpg" />
+        <img src="img/image26.jpg" />
+        <img src="img/image04.jpg" />
       </div>
     </div>
+    <button class="caro-arrow right" id="nextBtn">›</button>
+  </div>
+</section>
 
-    <nav class="nav-right">
-      <div class="tagline">"Entre carne e sombra, a fotografia é confissão".</div>
-      <button id="openCartBtn" class="cart-btn">Carrinho (<span id="cartCount">0</span>)</button>
-    </nav>
-  </header>
+<section class="products">
+  <h3 class="section-title">Nossos Pacotes</h3>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-text">
-        <h2>Oferecemos serviços fotográficos especializados em ensaios individuais, de casais e cobertura de eventos.</h2>
-        <p class="hero-lead">Transformamos instantes em confissões visuais — ensaios autorais com estética retrô e assinatura artística.</p>
-      </div>
+  <div class="product-grid">
+    <article class="product-card">
+      <h4>Ensaio Solo — Básico</h4>
+      <p class="prod-desc">100 fotos reveladas (digital).</p>
+      <div class="price">R$ 650,00</div>
+      <button class="add-btn"
+        data-id="solo-basico"
+        data-name="Ensaio Solo — Básico"
+        data-price="650">Adicionar ao carrinho</button>
+    </article>
 
-      <!-- Carousel -->
-      <div class="carousel" id="carousel">
-        <button class="caro-arrow left" id="prevBtn" aria-label="Anterior">‹</button>
+    <article class="product-card">
+      <h4>Ensaio Solo — Avançado</h4>
+      <p class="prod-desc">200 fotos reveladas (digital).</p>
+      <div class="price">R$ 750,00</div>
+      <button class="add-btn"
+        data-id="solo-avancado"
+        data-name="Ensaio Solo — Avançado"
+        data-price="750">Adicionar ao carrinho</button>
+    </article>
 
-        <!-- viewport com overflow:hidden para manter os controles visíveis -->
-        <div class="carousel-viewport">
-          <div class="caro-track" id="caroTrack">
-            <!-- imagens existentes do site (mantive as originais) -->
-            <img src="img/imagem menina.jpeg" alt="trabalho 1" />
-            <img src="img/image24.jpg" alt="trabalho 2" />
-            <img src="img/image12.jpg" alt="trabalho 3" />
-            <img src="img/image25.jpg" alt="trabalho 4" />
-            <img src="img/image02.jpg" alt="trabalho 5" />
-            <img src="img/image13.jpg" alt="trabalho 6" />
-            <img src="img/image26.jpg" alt="trabalho 7" />
-            <img src="img/image04.jpg" alt="trabalho 8" />
+    <article class="product-card">
+      <h4>Casais / Família</h4>
+      <p class="prod-desc">100 fotos entregues.</p>
+      <div class="price">R$ 850,00</div>
+      <button class="add-btn"
+        data-id="casal-familia"
+        data-name="Ensaio Casal / Família"
+        data-price="850">Adicionar ao carrinho</button>
+    </article>
+  </div>
+</section>
 
-            <!-- novas imagens que você enviou: coloque esses arquivos na pasta img/ -->
-            <img src="img/image07.jpg" alt="trabalho 9" />
-            <img src="img/image18.jpg" alt="trabalho 10" />
-            <img src="img/image19.jpg" alt="trabalho 11" />
-            <img src="img/image08.jpg" alt="trabalho 12" />
-            <img src="img/image09.jpg" alt="trabalho 13" />
-            <img src="img/imagem bar.jpeg" alt="trabalho 14" />
-            <img src="img/DSC_1560.jpg" alt="trabalho 15" />
-            <img src="img/DSC_1578.jpg" alt="trabalho 16" />
-            <img src="img/image23.jpg" alt="trabalho 17" />
-            <img src="img/image22.jpg" alt="trabalho 18" />
-            
+<section class="contact">
+  <h3 class="section-title">Contato Comercial</h3>
 
-          </div>
-        </div>
+  <p>
+    WhatsApp:
+    <a href="https://wa.me/5546988135025" target="_blank" class="contact-link">
+      +55 (46) 98813-5025
+    </a>
+  </p>
 
-        <button class="caro-arrow right" id="nextBtn" aria-label="Próximo">›</button>
-      </div>
-    </section>
+  <p>
+    Email:
+    <a href="mailto:ghostlychimericalghostly@gmail.com" class="contact-link">
+      ghostlychimericalghostly@gmail.com
+    </a>
+  </p>
 
-    <section class="products">
-      <h3 class="section-title">Nossos Pacotes</h3>
+  <p>
+    Instagram:
+    <a href="https://instagram.com/ghostly_chimerical" target="_blank" class="contact-link">
+      @ghostly_chimerical
+    </a>
+  </p>
+</section>
 
-      <div class="product-grid">
-        <article class="product-card">
-          <h4>Ensaio Solo — Básico</h4>
-          <p class="prod-desc">100 fotos reveladas (digital) — sessão criativa.</p>
-          <div class="price">R$ 650,00</div>
-          <button class="add-btn" data-id="solo-basico" data-name="Ensaio Solo - 100 fotos" data-price="450">Adicionar ao carrinho</button>
-        </article>
+</main>
 
-        <article class="product-card">
-          <h4>Ensaio Solo — Avançado</h4>
-          <p class="prod-desc">200 fotos reveladas (digital) — direcionamento de produção.</p>
-          <div class="price">R$ 750,00</div>
-          <button class="add-btn" data-id="solo-adv" data-name="Ensaio Solo - 200 fotos" data-price="740">Adicionar ao carrinho</button>
-        </article>
+<aside id="cartSidebar" class="cart-sidebar">
+  <div class="cart-header">
+    <h4>Seu Carrinho</h4>
+    <button id="closeCart" class="close-cart">✕</button>
+  </div>
 
-        <article class="product-card">
-          <h4>Casais / Família</h4>
-          <p class="prod-desc">100 fotos entregues — sessão para casal ou família.</p>
-          <div class="price">R$ 850,00</div>
-          <button class="add-btn" data-id="casal-fam" data-name="Ensaio Casal/Família - 100 fotos" data-price="700">Adicionar ao carrinho</button>
-        </article>
-      </div>
-    </section>
+  <div id="cartItems" class="cart-items"></div>
 
-    <section class="contact">
-      <h3 class="section-title">Contato Comercial</h3>
-      <p>Email: <a href="mailto:ghostlychimericalghostly@gmail.com" id="contactEmail" class="contact-link">ghostlychimericalghostly@gmail.com</a></p>
-      <p>Instagram: <a href="https://instagram.com/ghostly_chimerical" target="_blank" class="contact-link">@ghostly_chimerical</a> — <a href="https://instagram.com/_carlos_henrique________" target="_blank" class="contact-link">@_carlos_henrique________</a></p>
-    </section>
-  </main>
+  <div class="cart-footer">
+    <div class="subtotal" id="subtotal">R$ 0,00</div>
+    <button id="clearCart" class="btn-secondary">Limpar</button>
+    <button id="checkoutBtn" class="btn-primary">
+      Finalizar pedido via WhatsApp
+    </button>
+  </div>
+</aside>
 
-  <aside id="cartSidebar" class="cart-sidebar">
-    <div class="cart-header">
-      <h4>Seu Carrinho</h4>
-      <button id="closeCart" class="close-cart">✕</button>
-    </div>
-    <div id="cartItems" class="cart-items"></div>
+<div id="overlay" class="overlay"></div>
 
-    <div class="cart-footer">
-      <div class="subtotal" id="subtotal">R$ 0,00</div>
-      <div class="cart-actions">
-        <button id="clearCart" class="btn-secondary">Limpar</button>
-        <button id="checkoutBtn" class="btn-primary">Entrar em contato via Instagram</button>
-      </div>
-    </div>
-  </aside>
-
-  <div id="overlay" class="overlay"></div>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

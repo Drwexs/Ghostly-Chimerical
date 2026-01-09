@@ -1,4 +1,3 @@
-// Seletores
 const addButtons = document.querySelectorAll('.add-btn');
 const cartSidebar = document.getElementById('cartSidebar');
 const openCartBtn = document.getElementById('openCartBtn');
@@ -9,117 +8,100 @@ const cartCountEl = document.getElementById('cartCount');
 const subtotalEl = document.getElementById('subtotal');
 const clearCartBtn = document.getElementById('clearCart');
 const checkoutBtn = document.getElementById('checkoutBtn');
-const contactEmailBtn = document.getElementById('contactEmail');
 
 let cart = {};
 let caroIndex = 0;
 
-// Função para formatar valores em R$
 function formatBRL(n) {
   return 'R$ ' + Number(n).toFixed(2).replace('.', ',');
 }
 
-// Atualiza o carrinho
+function gerarCodigoPedido() {
+  return 'GC-' + Date.now().toString().slice(-5);
+}
+
 function updateCart() {
   cartItemsWrap.innerHTML = '';
-  let subtotal = 0, count = 0;
-  for (let id in cart) {
+  let subtotal = 0;
+  let count = 0;
+
+  Object.keys(cart).forEach(id => {
     const item = cart[id];
     subtotal += item.price * item.quantity;
     count += item.quantity;
+
     const div = document.createElement('div');
     div.className = 'cart-item';
     div.innerHTML = `
       <div class="meta">
         <h5>${item.name}</h5>
-        <p>Qtd: ${item.quantity} | ${formatBRL(item.price * item.quantity)}</p>
+        <p>Qtd: ${item.quantity} • ${formatBRL(item.price * item.quantity)}</p>
       </div>
       <button class="remove-btn" data-id="${id}">✕</button>
     `;
     cartItemsWrap.appendChild(div);
-  }
+  });
+
   cartCountEl.textContent = count;
   subtotalEl.textContent = formatBRL(subtotal);
 
-  // Remover item
   document.querySelectorAll('.remove-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.onclick = () => {
       delete cart[btn.dataset.id];
       updateCart();
-    });
+    };
   });
 }
 
-// Abrir/fechar carrinho
-openCartBtn.addEventListener('click', () => {
+openCartBtn.onclick = () => {
   cartSidebar.classList.add('open');
   overlay.classList.add('show');
-});
-closeCartBtn.addEventListener('click', () => {
-  cartSidebar.classList.remove('open');
-  overlay.classList.remove('show');
-});
-overlay.addEventListener('click', () => {
-  cartSidebar.classList.remove('open');
-  overlay.classList.remove('show');
-});
+};
 
-// Limpar carrinho
-clearCartBtn.addEventListener('click', () => {
+closeCartBtn.onclick = overlay.onclick = () => {
+  cartSidebar.classList.remove('open');
+  overlay.classList.remove('show');
+};
+
+clearCartBtn.onclick = () => {
   cart = {};
   updateCart();
-});
+};
 
-// Checkout via Instagram (abre perfil do Ghostly Chimerical)
-checkoutBtn.addEventListener('click', () => {
-  window.open("https://instagram.com/ghostly_chimerical", "_blank");
-});
-
-// Contato Comercial - abrir Gmail
-contactEmailBtn.addEventListener('click', () => {
-  window.location.href = "mailto:ghostlychimericalghostly@gmail.com";
-});
-
-// Adicionar itens ao carrinho
 addButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const id = btn.dataset.id;
-    const name = btn.dataset.name;
-    const price = Number(btn.dataset.price);
-    if (cart[id]) cart[id].quantity += 1;
-    else cart[id] = { name, price, quantity: 1 };
+  btn.onclick = () => {
+    const { id, name, price } = btn.dataset;
+    cart[id] = cart[id]
+      ? { ...cart[id], quantity: cart[id].quantity + 1 }
+      : { name, price: Number(price), quantity: 1 };
     updateCart();
     cartSidebar.classList.add('open');
     overlay.classList.add('show');
+  };
+});
+
+checkoutBtn.onclick = () => {
+  if (!Object.keys(cart).length) {
+    alert('Seu carrinho está vazio.');
+    return;
+  }
+
+  const pedidoId = gerarCodigoPedido();
+  const data = new Date().toLocaleString('pt-BR');
+
+  let msg = `🕯️ *NOVO PEDIDO — GHOSTLY CHIMERICAL*\n\n`;
+  msg += `🆔 Pedido: ${pedidoId}\n📅 Data: ${data}\n\n`;
+
+  let total = 0;
+  Object.values(cart).forEach(item => {
+    total += item.price * item.quantity;
+    msg += `• ${item.name}\nQtd: ${item.quantity} — ${formatBRL(item.price * item.quantity)}\n\n`;
   });
-});
 
-// Carrossel
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const caroTrack = document.getElementById('caroTrack');
-let caroWidth = caroTrack.children[0].offsetWidth + 10;
+  msg += `💰 Total: ${formatBRL(total)}\n\n📍 Origem: Site\n⏳ Aguardando contato`;
 
-function moveCarrossel() {
-  caroTrack.style.transform = `translateX(-${caroIndex * caroWidth}px)`;
-}
-
-nextBtn.addEventListener('click', () => {
-  if (caroIndex < caroTrack.children.length - Math.floor(caroTrack.parentElement.offsetWidth / caroWidth)) {
-    caroIndex++;
-    moveCarrossel();
-  }
-});
-
-prevBtn.addEventListener('click', () => {
-  if (caroIndex > 0) {
-    caroIndex--;
-    moveCarrossel();
-  }
-});
-
-// Ajustar largura em resize
-window.addEventListener('resize', () => {
-  caroWidth = caroTrack.children[0].offsetWidth + 10;
-  moveCarrossel();
-});
+  window.open(
+    `https://wa.me/5546988135025?text=${encodeURIComponent(msg)}`,
+    '_blank'
+  );
+};
